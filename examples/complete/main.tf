@@ -63,6 +63,7 @@ module "servicebus" {
   network_rule_set             = var.network_rule_set
   capacity                     = var.capacity
   premium_messaging_partitions = var.premium_messaging_partitions
+
   network_rules = [{
     ignore_missing_vnet_service_endpoint = true
     subnet_id                            = module.vnet.subnet_name_id_map["subnet_a"]

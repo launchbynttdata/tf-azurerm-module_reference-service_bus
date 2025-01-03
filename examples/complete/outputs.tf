@@ -15,6 +15,16 @@ output "namespace_id" {
   value       = module.servicebus.namespace_id
 }
 
+output "namespace_endpoint" {
+  description = "The endpoint for the Service Bus Namespace"
+  value       = module.servicebus.namespace_endpoint
+}
+
+output "namespace_name" {
+  description = "The name of the Service Bus Namespace"
+  value       = module.servicebus.namespace_name
+}
+
 output "namespace_default_primary_connection_string" {
   description = "The primary connection string for the Service Bus Namespace"
   value       = module.servicebus.namespace_default_primary_connection_string

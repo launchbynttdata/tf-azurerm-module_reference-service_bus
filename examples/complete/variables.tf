@@ -112,24 +112,6 @@ variable "capacity" {
   default     = 0
 }
 
-variable "identity_ids" {
-  description = "Specifies a list of User Assigned Managed Identity IDs to be assigned"
-  type        = list(string)
-  default     = []
-}
-
-variable "minimum_tls_version" {
-  description = "The minimum TLS version"
-  type        = string
-  default     = "1.2"
-}
-
-variable "public_network_access_enabled" {
-  description = "Is public network access enabled"
-  type        = bool
-  default     = true
-}
-
 variable "network_rule_set" {
   description = "The Network Rule Set for the Service Bus Namespace"
   type = object({
@@ -141,25 +123,10 @@ variable "network_rule_set" {
   default = null
 }
 
-variable "network_rules" {
-  description = "The Network Rules for the Service Bus Namespace"
-  type = list(object({
-    subnet_id                            = string
-    ignore_missing_vnet_service_endpoint = optional(bool, false)
-  }))
-  default = []
-}
-
 variable "premium_messaging_partitions" {
   description = "The number of partitions for Premium Messaging"
   type        = number
   default     = 0
-}
-
-variable "local_auth_enabled" {
-  description = "Is local authentication enabled"
-  type        = bool
-  default     = true
 }
 
 variable "address_space" {

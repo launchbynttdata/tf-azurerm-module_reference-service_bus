@@ -109,6 +109,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.77 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.6 |
 
 ## Providers
@@ -152,6 +153,8 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_namespace_id"></a> [namespace\_id](#output\_namespace\_id) | The ID of the Service Bus Namespace |
+| <a name="output_namespace_name"></a> [namespace\_name](#output\_namespace\_name) | The name of the Service Bus Namespace |
+| <a name="output_namespace_endpoint"></a> [namespace\_endpoint](#output\_namespace\_endpoint) | The endpoint for the Service Bus Namespace |
 | <a name="output_namespace_default_primary_connection_string"></a> [namespace\_default\_primary\_connection\_string](#output\_namespace\_default\_primary\_connection\_string) | The primary connection string for the Service Bus Namespace |
 | <a name="output_namespace_default_secondary_connection_string"></a> [namespace\_default\_secondary\_connection\_string](#output\_namespace\_default\_secondary\_connection\_string) | The secondary connection string for the Service Bus Namespace |
 | <a name="output_namespace_default_primary_key"></a> [namespace\_default\_primary\_key](#output\_namespace\_default\_primary\_key) | The default primary key for the Service Bus Namespace |

@@ -1,36 +1,61 @@
 package testimpl
 
 import (
-	"regexp"
+	"context"
+	"net/url"
+	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
-	// TODO: Remove this test from your module once you have defined some other tests.
-	t.Run("TestAlwaysSucceeds", func(t *testing.T) {
-		assert.Equal(t, "foo", "foo", "Should always be the same!")
-		assert.NotEqual(t, "foo", "bar", "Should never be the same!")
+	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
+	if len(subscriptionId) == 0 {
+		t.Fatal("ARM_SUBSCRIPTION_ID environment variable is not set")
+	}
+
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		t.Fatalf("Unable to get credentials: %e\n", err)
+	}
+
+	// The client requires the full hostname of the service bus
+	busEndpoint := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_endpoint")
+	u, err := url.Parse(busEndpoint)
+	if err != nil {
+		t.Fatalf("Unable to parse service bus endpoint: %e\n", err)
+	}
+	busName := u.Hostname()
+
+	adminClient, err := admin.NewClient(busName, credential, nil)
+	if err != nil {
+		t.Fatalf("Unable to create service bus admin client: %e\n", err)
+	}
+
+	t.Run("DoesNamespaceExist", func(t *testing.T) {
+		resp, err := adminClient.GetNamespaceProperties(context.TODO(), nil)
+		if err != nil {
+			t.Fatalf("Unable to get namespace properties: %e\n", err)
+		}
+		name := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_name")
+
+		assert.Equal(t, name, resp.Name, "Expected name to be %s, got %s", name, resp.Name)
 	})
-
-	// When cloning the skeleton to a new module, you will need to change the below test
-	// to meet your needs and add any new tests that apply to your situation.
-	t.Run("TestSkeletonDeployedIsInvokable", func(t *testing.T) {
-		output := terraform.Output(t, ctx.TerratestTerraformOptions(), "string")
-
-		// Output contains only alphanumeric characters and 🍰
-		assert.Regexp(t, regexp.MustCompile("^[A-Za-z🍰0-9]+$"), output)
-
-		// Other tests would go here and can use functions from lcaf-component-terratest.
-		// Examples (from lambda):
-		// functionName := terraform.Output(t, ctx.TerratestTerraformOptions, "function_name")
-		// require.NotEmpty(t, functionName, "name of deployed lambda should be set")
-		// awsApiLambdaClient := test_helper_lambda.GetAWSApiLambdaClient(t)
-		// test_helper_lambda.WaitForLambdaSpinUp(t, awsApiLambdaClient, functionName)
-		// test_helper_lambda.TestIsLambdaInvokable(t, awsApiLambdaClient, functionName)
-		// test_helper_lambda.TestLambdaTags(t, awsApiLambdaClient, functionName, ctx.TestConfig.(*ThisTFModuleConfig).Tags)
+	t.Run("IsNamespaceOutputCorrect", func(t *testing.T) {
+		primaryConnectionString := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_default_primary_connection_string")
+		assert.NotEmpty(t, primaryConnectionString, "Expected primary connection string to be non-empty")
+		assert.Contains(t, primaryConnectionString, "Endpoint=sb://", "Expected primary connection string to contain 'Endpoint=sb://")
+		secondaryConnectionString := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_default_secondary_connection_string")
+		assert.NotEmpty(t, secondaryConnectionString, "Expected secondary connection string to be non-empty")
+		assert.Contains(t, secondaryConnectionString, "Endpoint=sb://", "Expected secondary connection string to contain 'Endpoint=sb://")
+		primaryKey := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_default_primary_key")
+		assert.NotEmpty(t, primaryKey, "Expected primary key to be non-empty")
+		secondaryKey := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_default_secondary_key")
+		assert.NotEmpty(t, secondaryKey, "Expected secondary key to be non-empty")
 	})
 }

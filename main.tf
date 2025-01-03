@@ -14,16 +14,20 @@ module "servicebus_namespace" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/servicebus_namespace/azurerm"
   version = "~> 1.2"
 
-  resource_group_name          = var.resource_group_name
-  name                         = var.namespace_name
-  location                     = var.region
-  sku                          = var.sku
-  configure_identity           = var.configure_identity
-  identity_type                = var.identity_type
-  network_rule_set             = var.network_rule_set
-  capacity                     = var.capacity
-  premium_messaging_partitions = var.premium_messaging_partitions
-  network_rules                = var.network_rules
+  resource_group_name           = var.resource_group_name
+  name                          = var.namespace_name
+  location                      = var.region
+  sku                           = var.sku
+  configure_identity            = var.configure_identity
+  identity_type                 = var.identity_type
+  identity_ids                  = var.identity_ids
+  network_rule_set              = var.network_rule_set
+  minimum_tls_version           = var.minimum_tls_version
+  public_network_access_enabled = var.public_network_access_enabled
+  local_auth_enabled            = var.local_auth_enabled
+  capacity                      = var.capacity
+  premium_messaging_partitions  = var.premium_messaging_partitions
+  network_rules                 = var.network_rules
 
   tags = var.tags
 }
