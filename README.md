@@ -119,8 +119,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_servicebus_namespace"></a> [servicebus\_namespace](#module\_servicebus\_namespace) | terraform.registry.launch.nttdata.com/module_primitive/servicebus_namespace/azurerm | ~> 1.0 |
-| <a name="module_service_bus_topic"></a> [service\_bus\_topic](#module\_service\_bus\_topic) | terraform.registry.launch.nttdata.com/module_primitive/servicebus_topic/azurerm | ~> 1.0 |
+| <a name="module_servicebus_namespace"></a> [servicebus\_namespace](#module\_servicebus\_namespace) | terraform.registry.launch.nttdata.com/module_primitive/servicebus_namespace/azurerm | ~> 1.2 |
+| <a name="module_servicebus_topic"></a> [servicebus\_topic](#module\_servicebus\_topic) | terraform.registry.launch.nttdata.com/module_primitive/servicebus_topic/azurerm | ~> 1.0 |
 
 ## Resources
 
@@ -130,13 +130,31 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_length"></a> [length](#input\_length) | n/a | `number` | `24` | no |
-| <a name="input_number"></a> [number](#input\_number) | n/a | `bool` | `true` | no |
-| <a name="input_special"></a> [special](#input\_special) | n/a | `bool` | `false` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The name of the Resource Group in which the Service Bus Namespace should be created | `string` | n/a | yes |
+| <a name="input_namespace_name"></a> [namespace\_name](#input\_namespace\_name) | The name of the Service Bus Namespace | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The location/region where the Service Bus Namespace should be created | `string` | n/a | yes |
+| <a name="input_sku"></a> [sku](#input\_sku) | The SKU of the Service Bus Namespace | `string` | `"Standard"` | no |
+| <a name="input_configure_identity"></a> [configure\_identity](#input\_configure\_identity) | Should the identity be configured | `bool` | `true` | no |
+| <a name="input_identity_type"></a> [identity\_type](#input\_identity\_type) | The type of identity used for the Service Bus Namespace | `string` | `"SystemAssigned"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resource | `map(string)` | `{}` | no |
+| <a name="input_capacity"></a> [capacity](#input\_capacity) | The capacity of the Service Bus Namespace | `number` | `0` | no |
+| <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | Specifies a list of User Assigned Managed Identity IDs to be assigned | `list(string)` | `[]` | no |
+| <a name="input_minimum_tls_version"></a> [minimum\_tls\_version](#input\_minimum\_tls\_version) | The minimum TLS version | `string` | `"1.2"` | no |
+| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Is public network access enabled | `bool` | `true` | no |
+| <a name="input_network_rule_set"></a> [network\_rule\_set](#input\_network\_rule\_set) | The Network Rule Set for the Service Bus Namespace | <pre>object({<br>    default_action                = optional(string, "Allow")<br>    public_network_access_enabled = optional(bool, true)<br>    trusted_services_allowed      = optional(bool)<br>    ip_rules                      = optional(list(string))<br>  })</pre> | `null` | no |
+| <a name="input_network_rules"></a> [network\_rules](#input\_network\_rules) | The Network Rules for the Service Bus Namespace | <pre>list(object({<br>    subnet_id                            = string<br>    ignore_missing_vnet_service_endpoint = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_premium_messaging_partitions"></a> [premium\_messaging\_partitions](#input\_premium\_messaging\_partitions) | The number of partitions for Premium Messaging | `number` | `0` | no |
+| <a name="input_local_auth_enabled"></a> [local\_auth\_enabled](#input\_local\_auth\_enabled) | Is local authentication enabled | `bool` | `true` | no |
+| <a name="input_servicebus_topics"></a> [servicebus\_topics](#input\_servicebus\_topics) | A map of Service Bus Topics to create | <pre>map(object({<br>    name = string<br>  }))</pre> | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_string"></a> [string](#output\_string) | n/a |
+| <a name="output_namespace_id"></a> [namespace\_id](#output\_namespace\_id) | The ID of the Service Bus Namespace |
+| <a name="output_namespace_default_primary_connection_string"></a> [namespace\_default\_primary\_connection\_string](#output\_namespace\_default\_primary\_connection\_string) | The primary connection string for the Service Bus Namespace |
+| <a name="output_namespace_default_secondary_connection_string"></a> [namespace\_default\_secondary\_connection\_string](#output\_namespace\_default\_secondary\_connection\_string) | The secondary connection string for the Service Bus Namespace |
+| <a name="output_namespace_default_primary_key"></a> [namespace\_default\_primary\_key](#output\_namespace\_default\_primary\_key) | The default primary key for the Service Bus Namespace |
+| <a name="output_namespace_default_secondary_key"></a> [namespace\_default\_secondary\_key](#output\_namespace\_default\_secondary\_key) | The default secondary key for the Service Bus Namespace |
+| <a name="output_topics"></a> [topics](#output\_topics) | The Service Bus topics created |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

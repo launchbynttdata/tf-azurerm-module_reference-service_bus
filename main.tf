@@ -12,23 +12,27 @@
 
 module "servicebus_namespace" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/servicebus_namespace/azurerm"
-  version = "~> 1.0"
+  version = "~> 1.2"
 
-  resource_group_name = var.resource_group_name
-  name                = var.namespace_name
-  location            = var.region
-  sku                 = var.sku
-  configure_identity  = var.configure_identity
-  identity_type       = var.identity_type
+  resource_group_name          = var.resource_group_name
+  name                         = var.namespace_name
+  location                     = var.region
+  sku                          = var.sku
+  configure_identity           = var.configure_identity
+  identity_type                = var.identity_type
+  network_rule_set             = var.network_rule_set
+  capacity                     = var.capacity
+  premium_messaging_partitions = var.premium_messaging_partitions
+  network_rules                = var.network_rules
 
-  tags = local.tags
+  tags = var.tags
 }
 
-module "service_bus_topic" {
+module "servicebus_topic" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/servicebus_topic/azurerm"
   version = "~> 1.0"
 
-  for_each = var.service_bus_topic
+  for_each = var.servicebus_topics
 
   namespace_id = module.servicebus_namespace.id
   name         = each.value.name
