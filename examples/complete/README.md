@@ -61,4 +61,6 @@ No resources.
 | <a name="output_namespace_default_primary_key"></a> [namespace\_default\_primary\_key](#output\_namespace\_default\_primary\_key) | The default primary key for the Service Bus Namespace |
 | <a name="output_namespace_default_secondary_key"></a> [namespace\_default\_secondary\_key](#output\_namespace\_default\_secondary\_key) | The default secondary key for the Service Bus Namespace |
 | <a name="output_topics"></a> [topics](#output\_topics) | The Service Bus topics created |
+| <a name="output_topic1_name"></a> [topic1\_name](#output\_topic1\_name) | The name of the first topic |
+| <a name="output_topic2_name"></a> [topic2\_name](#output\_topic2\_name) | The name of the second topic |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

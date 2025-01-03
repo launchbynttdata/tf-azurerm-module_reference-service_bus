@@ -36,11 +36,6 @@ network_rule_set = {
   ip_rules                      = []
 }
 
-network_rules = [{
-  ignore_missing_vnet_service_endpoint = true
-  subnet_id                            = module.vnet.subnet_name_id_map["subnet_a"]
-}]
-
 servicebus_topics = {
   "topic1" = {
     name = "topic1"

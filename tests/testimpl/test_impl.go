@@ -46,6 +46,7 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 
 		assert.Equal(t, name, resp.Name, "Expected name to be %s, got %s", name, resp.Name)
 	})
+
 	t.Run("IsNamespaceOutputCorrect", func(t *testing.T) {
 		primaryConnectionString := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_default_primary_connection_string")
 		assert.NotEmpty(t, primaryConnectionString, "Expected primary connection string to be non-empty")
@@ -57,5 +58,19 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 		assert.NotEmpty(t, primaryKey, "Expected primary key to be non-empty")
 		secondaryKey := terraform.Output(t, ctx.TerratestTerraformOptions(), "namespace_default_secondary_key")
 		assert.NotEmpty(t, secondaryKey, "Expected secondary key to be non-empty")
+	})
+
+	t.Run("DoTopicsExist", func(t *testing.T) {
+		topic1Name := terraform.Output(t, ctx.TerratestTerraformOptions(), "topic1_name")
+		topic2Name := terraform.Output(t, ctx.TerratestTerraformOptions(), "topic2_name")
+		for _, topicName := range []string{topic1Name, topic2Name} {
+			resp, err := adminClient.GetTopic(context.TODO(), topicName, nil)
+			if err != nil {
+				t.Fatalf("Unable to retrieve topic: %e\n", err)
+			}
+
+			assert.Equal(t, topicName, resp.TopicName, "Expected topic name to be %s, got %s", topicName, resp.TopicName)
+			assert.Equal(t, "Active", string(*resp.Status), "Expected topic status to be Active, got %s", string(*resp.Status))
+		}
 	})
 }

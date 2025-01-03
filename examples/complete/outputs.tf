@@ -53,3 +53,14 @@ output "topics" {
   description = "The Service Bus topics created"
   value       = module.servicebus.topics
 }
+
+//for the tests...
+output "topic1_name" {
+  description = "The name of the first topic"
+  value       = module.servicebus.topics[0].topic1.name
+}
+
+output "topic2_name" {
+  description = "The name of the second topic"
+  value       = module.servicebus.topics[0].topic2.name
+}
