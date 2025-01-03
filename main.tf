@@ -10,8 +10,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-resource "random_string" "string" {
-  length  = var.length
-  numeric = var.number
-  special = var.special
+module "servicebus_namespace" {
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/servicebus_namespace/azurerm"
+  version = "~> 1.0"
+
+  resource_group_name = var.resource_group_name
+  name                = var.namespace_name
+  location            = var.region
+  sku                 = var.sku
+  configure_identity  = var.configure_identity
+  identity_type       = var.identity_type
+
+  tags = local.tags
+}
+
+module "service_bus_topic" {
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/servicebus_topic/azurerm"
+  version = "~> 1.0"
+
+  for_each = var.service_bus_topic
+
+  namespace_id = module.servicebus_namespace.id
+  name         = each.value.name
 }
