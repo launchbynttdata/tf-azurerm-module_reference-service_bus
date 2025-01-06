@@ -1,6 +1,6 @@
 module github.com/launchbynttdata/tf-azurerm-module_reference-service_bus
 
-go 1.23
+go 1.22
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0
